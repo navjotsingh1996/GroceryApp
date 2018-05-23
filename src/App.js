@@ -5,19 +5,20 @@ import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import "react-table/react-table.css";
 import './App.css';
 
 export const fakeData = [
-    {date: "10/10/10", name: "test", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "apples", date: "1/1/1", amount: 5}, {name: "blueberries", date: "1/1/1", amount: 5}, {name: "strawberries", date: "1/1/1", amount: 5}, {name: "berries", date: "1/1/1", amount: 5}]},
-  {date: "1/2/18", name: "test1", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}]},
-  {date: "12/1/2", name: "tester", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}]},
-  {date: "02/12/01", name: "wow", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5} ]},
-  {date: "12/12/12", name: "alpha", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}]},
-  {date: "1/1/1", name: "bravo", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}]},
-  {date: "03/04/59", name: "zeta", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5} ]},
-  {date: "11/11/25", name: "1dfs", groceries: [{name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}, {name: "carrots", date: "1/1/1", amount: 5}]},
+    {date: "10/10/10", name: "test", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "apples", date: "1/1/1", amount: 5, checked: false}, {name: "blueberries", date: "1/1/1", amount: 5, checked: false}, {name: "strawberries", date: "1/1/1", amount: 5, checked: false}, {name: "berries", date: "1/1/1", amount: 5, checked: false}]},
+  {date: "1/2/18", name: "test1", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}]},
+  {date: "12/1/2", name: "tester", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}]},
+  {date: "02/12/01", name: "wow", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false} ]},
+  {date: "12/12/12", name: "alpha", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}]},
+  {date: "1/1/1", name: "bravo", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}]},
+  {date: "03/04/59", name: "zeta", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false} ]},
+  {date: "11/11/25", name: "1dfs", groceries: [{name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}, {name: "carrots", date: "1/1/1", amount: 5, checked: false}]},
 ];
 
 class App extends Component {
@@ -29,6 +30,14 @@ class App extends Component {
             selected: fakeData[0],
             delDialog: false,
             formDialog: false,
+            grocDialog: false,
+            formData: {
+                name: "",
+                date: "",
+                itemNums: "",
+                items: [],
+            },
+            expanded: []
         };
     }
 
@@ -36,10 +45,22 @@ class App extends Component {
         this.setState({data: fakeData});
     }
 
-  createGroceryList = (list) => {
+    checkOffItems =(groceryIndex, dataIndex) => {
+        const data = this.state.data;
+        data[dataIndex].groceries[groceryIndex].checked = !data[dataIndex].groceries[groceryIndex].checked;
+        this.setState({data});
+    };
+
+  createGroceryList = (list, listIndex, firstArr) => {
     return (
         list.map((grocery, index) => {
-          return (<ListItem key={index} primaryText={`${grocery.amount} ${grocery.name}`} leftCheckbox={<Checkbox />} />)
+          const realDataIndex = firstArr ? index : Math.ceil(this.state.data[listIndex].groceries.length/2) + index;
+          return (<ListItem key={index} primaryText={`${grocery.amount} ${grocery.name}`} leftCheckbox={
+              <Checkbox
+                  onCheck={() => {this.checkOffItems(realDataIndex, listIndex)}}
+                  checked={this.state.data[listIndex].groceries[realDataIndex].checked}
+              />
+          } />)
         })
     );
   };
@@ -68,6 +89,18 @@ class App extends Component {
         this.setState({formDialog: false});
     };
 
+    openGrocDialog = () => {
+        this.setState({formDialog: false, grocDialog: true});
+    };
+
+    closeGrocDialog = () => {
+        this.setState({grocDialog: false});
+    };
+
+    saveGrocDialog = () => {
+        this.setState({grocDialog: false});
+    };
+
   deleteRow = () => {
       const row = this.state.selected;
       var index = 0;
@@ -82,19 +115,52 @@ class App extends Component {
       this.setState({data: newData, delDialog: false});
   };
 
+    filterGroceries = (val, arr) => {
+        var bool = false;
+        arr.map((a) => {
+            if (a.name.indexOf(val) !== -1) bool = true;
+        });
+        return bool;
+    };
+
+    formDataName = (evt, val) => {
+        const formData = this.state.formData;
+        formData.name = val;
+      this.setState({formData: formData});
+    };
+
+    formDataDate = (evt, val) => {
+        const formData = this.state.formData;
+        formData.date = val;
+        this.setState({formData: formData});
+    };
+
+    formDataItemNums = (evt, val) => {
+        const formData = this.state.formData;
+        formData.itemNums = val;
+        this.setState({formData: formData});
+    };
+
   render() {
       const delActions = [
-          <RaisedButton label="NO" primary onClick={this.closeDelDialog} />,
           <RaisedButton label="YES" primary keyboardFocused={true} onClick={this.deleteRow} />,
+          <RaisedButton label="NO" secondary onClick={this.closeDelDialog} />,
       ];
-      const formAction = [];
+      const createListActions = [
+          <RaisedButton label="NEXT" primary onClick={this.openGrocDialog} />,
+          <RaisedButton label="CANCEL" secondary onClick={this.closeFormDialog} />,
+      ];
+      const grocActions = [
+          <RaisedButton label="SAVE" primary onClick={this.saveGrocDialog} />,
+          <RaisedButton label="CANCEL" secondary onClick={this.closeGrocDialog} />,
+      ];
     return (
       <div className="App">
         <h1>Grocery List</h1>
         <RaisedButton primary label="Go To Lists" /><br /><br /><br /><br />
         <RaisedButton label="+ Add a list" style={{float: "right"}} onClick={this.openFormDialog} />
           <Dialog
-              title="Dialog With Actions"
+              title="Confirmation"
               actions={delActions}
               modal={false}
               open={this.state.delDialog}
@@ -103,13 +169,24 @@ class App extends Component {
               {"Are you sure you want to delete"} <font size="+2"><strong>{this.state.selected.name}</strong></font> {" list?"}
           </Dialog>
           <Dialog
-              title="Dialog With Actions"
-              actions={formAction}
+              title="Create your List"
+              actions={createListActions}
               modal={false}
               open={this.state.formDialog}
               onRequestClose={this.closeFormDialog}
           >
-              {"FORM"}
+              <TextField floatingLabelText="Date" hintText="EX: 10/10/10" value={this.state.formData.date} onChange={this.formDataDate}/><br /><br />
+              <TextField floatingLabelText="Name" value={this.state.formData.name} onChange={this.formDataName}/><br /><br />
+              <TextField floatingLabelText="Number of grocery items" value={this.state.formData.itemNums} onChange={this.formDataItemNums}/>
+          </Dialog>
+          <Dialog
+              title="List of Groceries"
+              actions={grocActions}
+              modal={false}
+              open={this.state.grocDialog}
+              onRequestClose={this.closeGrocDialog}
+          >
+              This will have the grocery list
           </Dialog>
         <br /><br /><br />
         <ReactTable
@@ -123,6 +200,7 @@ class App extends Component {
                     Header: "Date",
                     id: "date",
                     accessor: "date",
+                    width: 100,
                   }
                 ]
               },
@@ -131,7 +209,8 @@ class App extends Component {
                   {
                     Header: "Name",
                     id: "name",
-                    accessor: "name"
+                    accessor: "name",
+                    width: 2050,
                   }
                 ]
               },
@@ -141,7 +220,11 @@ class App extends Component {
                     Header: "# of items",
                     id: "items",
                     accessor: "groceries",
-                    Cell: row => row.value.length
+                    width: 100,
+                    Cell: row => row.value.length,
+                    filterMethod: (filter, row) => {
+                        return (row.items.length.toString().indexOf(filter.value) !== -1 || this.filterGroceries(filter.value, row.items));
+                    }
                   }
                 ]
               },
@@ -150,6 +233,8 @@ class App extends Component {
                   {
                     Header: "",
                     sortable: false,
+                    width: 50,
+                    filterable: false,
                     Cell: row => this.delCell(row)
                   }
                 ]
@@ -171,14 +256,16 @@ class App extends Component {
                   <div style={{display: "inline-flex"}}>
                     <List style={{width: "50%"}}>
                       <Subheader>List of Groceries</Subheader>
-                      {this.createGroceryList(row1)}
+                      {this.createGroceryList(row1, row.index, true)}
                     </List>
                     <List style={{width: "50%"}}>
-                      {this.createGroceryList(row2)}
+                      {this.createGroceryList(row2, row.index, false)}
                     </List>
                   </div>
               );}
           }
+          expanded={this.state.expanded}
+          onExpandedChange={expanded => this.setState({ expanded })}
         />
       </div>
     );
