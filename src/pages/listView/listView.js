@@ -62,15 +62,12 @@ class ListView extends Component {
     };
 
     componentWillMount () {
-      //  this.setState({data: fakeData});
         const rows = parseInt(cookie.load('grocery_app_rows'));
         const data = [];
         for (var i = 0; i < rows; i++) {
             if (i === 0) this.setState({selected: cookie.load('grocery_app_data0')});
-            console.log(cookie.load('grocery_app_data'+i));
             data.push(cookie.load('grocery_app_data'+i));
         }
-        console.log(data);
         this.setState({data});
     }
 
@@ -135,7 +132,12 @@ class ListView extends Component {
     };
 
     saveGrocDialog = () => {
-        this.setState({grocDialog: false});
+        const newRow = {name: this.state.formData.name, date: this.state.formData.date, groceries: this.state.formData.items};
+        console.log(newRow);
+        const data = this.state.data;
+        data.push(newRow);
+        this.setState({grocDialog: false, data});
+        this.saveDataToCookies();
     };
 
     deleteRow = () => {
@@ -182,7 +184,7 @@ class ListView extends Component {
             formData.itemErr = "";
             const items = [];
             for (var i = 0; i < parseInt(val); i++) {
-                items.push({name: "", quantity: "", exp: ""});
+                items.push({name: "", amount: "", date: "", checked: false});
             }
             formData.items = items;
         }
@@ -191,9 +193,27 @@ class ListView extends Component {
 
     addItem = () => {
         const formData = this.state.formData;
-        formData.items.push({name: "", quantity: "", exp: ""});
+        formData.items.push({name: "", amount: "", date: "", checked: false});
         this.setState({formData});
     };
+
+    groceryNameChange(val, i){
+        const formData = this.state.formData;
+        formData.items[i].name = val;
+        this.setState({formData});
+    }
+
+    groceryQuantityChange(val, i){
+        const formData = this.state.formData;
+        formData.items[i].amount = val;
+        this.setState({formData});
+    }
+
+    groceryDateChange(val, i){
+        const formData = this.state.formData;
+        formData.items[i].date = val;
+        this.setState({formData});
+    }
 
     render() {
         this.saveDataToCookies();
@@ -246,9 +266,9 @@ class ListView extends Component {
                     {this.state.formData.items.map((d,i) => {
                         return (<div key={i}>
                                     <h2>{i+1}</h2><br />
-                                    <TextField floatingLabelText="Name" /><br />
-                                    <TextField floatingLabelText="Quantity" /><br />
-                                    <TextField floatingLabelText="Expiration Date" /><br />
+                                    <TextField floatingLabelText="Name" onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
+                                    <TextField floatingLabelText="Quantity" onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
+                                    <TextField floatingLabelText="Expiration Date" onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
                                 </div>)
                     })}
                     <FloatingActionButton >
@@ -287,7 +307,7 @@ class ListView extends Component {
                                     id: "items",
                                     accessor: "groceries",
                                     width: 100,
-                                    Cell: row => row.value.length,
+                                    Cell: row => row.value ? row.value.length : 0,
                                     filterMethod: (filter, row) => {
                                         return (row.items.length.toString().indexOf(filter.value) !== -1 || this.filterGroceries(filter.value, row.items));
                                     }
@@ -311,6 +331,7 @@ class ListView extends Component {
                     SubComponent = {row => {
                         var row1 = [];
                         var row2 = [];
+                        if (!row.original.groceries) return (<div>You have no groceries in this list</div>);
                         row.original.groceries.map((grocery, i) => {
                             if (i < row.original.groceries.length/2) {
                                 row1.push(grocery);
