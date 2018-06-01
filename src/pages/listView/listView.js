@@ -234,7 +234,7 @@ class ListView extends Component {
         return (
             <div className="ListView">
                 <h1>Grocery List</h1><br /><br /><br /><br />
-                <RaisedButton label="+ Add a list" style={{float: "right"}} onClick={this.openFormDialog} />
+                <RaisedButton label="+ Add a list" style={{float: "right", marginRight: 100}} onClick={this.openFormDialog} />
                 <Dialog
                     title="Confirmation"
                     actions={delActions}
