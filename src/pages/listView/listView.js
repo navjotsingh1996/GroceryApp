@@ -215,6 +215,12 @@ class ListView extends Component {
         this.setState({formData});
     }
 
+    deleteGrocery(index) {
+        const formData = this.state.formData;
+        formData.items.splice(index,1);
+        this.setState({formData});
+    }
+
     render() {
         this.saveDataToCookies();
         const delActions = [
@@ -262,13 +268,17 @@ class ListView extends Component {
                     open={this.state.grocDialog}
                     onRequestClose={this.closeGrocDialog}
                     autoScrollBodyContent
+                    contentStyle={{maxWidth: "none", width: "100%"}}
                 >
                     {this.state.formData.items.map((d,i) => {
                         return (<div key={i}>
-                                    <h2>{i+1}</h2><br />
-                                    <TextField floatingLabelText="Name" onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
-                                    <TextField floatingLabelText="Quantity" onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
-                                    <TextField floatingLabelText="Expiration Date" onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
+                                    <div style={{display: 'inline-flex'}}>
+                                        <h2 style={{paddingTop: '15px', marginRight: '50px'}}>{i+1}</h2><br />
+                                    <TextField style={{marginRight: "50px"}} floatingLabelText="Name" onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
+                                    <TextField style={{marginRight: "100px"}} floatingLabelText="Quantity" onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
+                                    <TextField style={{marginRight: "200px"}} floatingLabelText="Expiration Date" onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
+                                            <RaisedButton style={{height: 35, marginTop: 25}} labelColor="#ffffff" backgroundColor="red" label="DELETE" onClick={() => this.deleteGrocery(i)} />
+                                    </div>
                                 </div>)
                     })}
                     <FloatingActionButton >
