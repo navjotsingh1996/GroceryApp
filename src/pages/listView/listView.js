@@ -36,9 +36,9 @@ class ListView extends Component {
             formData: {
                 name: "",
                 nameErr: "",
-                date: "",
+                date: this.getCurrentDate(),
                 dateErr: "",
-                itemNums: "",
+                itemNums: 0,
                 itemErr: "",
                 items: [],
             },
@@ -62,6 +62,9 @@ class ListView extends Component {
     };
 
     componentWillMount () {
+        if (this.props.location.search.includes("t")) {
+            this.setState({formDialog: true});
+        }
         const rows = parseInt(cookie.load('grocery_app_rows'));
         const data = [];
         for (var i = 0; i < rows; i++) {
@@ -95,7 +98,7 @@ class ListView extends Component {
         const today = new Date();
         const year = today.getFullYear();
         const date = today.getDate().toString().length == 2 ? today.getDate() : '0'+today.getDate();
-        const month = today.getMonth().toString().length == 2 ? today.getMonth() : '0'+today.getMonth();
+        const month = today.getMonth().toString().length == 2 ? today.getMonth()+1 : '0'+(today.getMonth()+1);
         return month+'/'+date+'/'+year;
     };
 
@@ -131,13 +134,48 @@ class ListView extends Component {
         this.setState({grocDialog: false});
     };
 
+    checkForEmptyNames = () => {
+        const formData = this.state.formData;
+        console.log(formData);
+        var indexes = [];
+        var diff = 0;
+        this.state.formData.items.map((item, i) => {
+            console.log(item, i);
+            if (item.name === "" || item.name === " ") {
+                indexes.push(i-diff);
+                diff++;
+            }
+            else {
+                console.log(item.name);
+            }
+        });
+        indexes.map((index) => {
+            formData.items.splice(index,1);
+        });
+        this.setState({formData});
+    };
+
+    clearFormData = () => {
+        const formData = {
+            name: "",
+            nameErr: "",
+            date: this.getCurrentDate(),
+            dateErr: "",
+            itemNums: 0,
+            itemErr: "",
+            items: [],
+        };
+        this.setState({formData});
+    };
+
     saveGrocDialog = () => {
+        this.checkForEmptyNames();
         const newRow = {name: this.state.formData.name, date: this.state.formData.date, groceries: this.state.formData.items};
-        console.log(newRow);
         const data = this.state.data;
         data.push(newRow);
         this.setState({grocDialog: false, data});
         this.saveDataToCookies();
+        this.clearFormData();
     };
 
     deleteRow = () => {
@@ -177,10 +215,14 @@ class ListView extends Component {
 
     formDataItemNums = (evt, val) => {
         const formData = this.state.formData;
-        if (isNaN(val)) {
+        if (isNaN(val) && val !== "") {
             formData.itemErr = "You can only insert numbers in this field";
         } else {
-            formData.itemNums = parseInt(val);
+            if (val === "") {
+                formData.itemNums = 0;
+            } else {
+                formData.itemNums = parseInt(val);
+            }
             formData.itemErr = "";
             const items = [];
             for (var i = 0; i < parseInt(val); i++) {
@@ -257,7 +299,7 @@ class ListView extends Component {
                     open={this.state.formDialog}
                     onRequestClose={this.closeFormDialog}
                 >
-                    <TextField floatingLabelText="Date" hintText="EX: 10/10/10" errorText={this.state.formData.dateErr} value={this.getCurrentDate()} onChange={this.formDataDate}/><br /><br />
+                    <TextField floatingLabelText="Date" hintText="EX: 10/10/10" errorText={this.state.formData.dateErr} value={this.state.formData.date} onChange={this.formDataDate}/><br /><br />
                     <TextField floatingLabelText="Name" value={this.state.formData.name} errorText={this.state.formData.nameErr} onChange={this.formDataName}/><br /><br />
                     <TextField floatingLabelText="Number of grocery items" value={this.state.formData.itemNums} errorText={this.state.formData.itemErr} onChange={this.formDataItemNums}/>
                 </Dialog>
@@ -268,12 +310,12 @@ class ListView extends Component {
                     open={this.state.grocDialog}
                     onRequestClose={this.closeGrocDialog}
                     autoScrollBodyContent
-                    contentStyle={{maxWidth: "none", width: "100%"}}
+                    contentStyle={{maxWidth: "none", width: "80%"}}
                 >
                     {this.state.formData.items.map((d,i) => {
                         return (<div key={i}>
                                     <div style={{display: 'inline-flex'}}>
-                                        <h2 style={{paddingTop: '15px', marginRight: '50px'}}>{i+1}</h2><br />
+                                        {i+1 < 10 ? (<h2 style={{paddingTop: '15px', marginRight: '50px'}}>{i+1}</h2>) :  (<h2 style={{paddingTop: '15px', marginRight: '35px'}}>{i+1}</h2>)}<br />
                                     <TextField style={{marginRight: "50px"}} floatingLabelText="Name" onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
                                     <TextField style={{marginRight: "100px"}} floatingLabelText="Quantity" onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
                                     <TextField style={{marginRight: "200px"}} floatingLabelText="Expiration Date" onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
@@ -352,10 +394,10 @@ class ListView extends Component {
                         return (
                             <div style={{display: "inline-flex"}}>
                                 <List style={{width: "50%"}}>
-                                    <Subheader>List of Groceries</Subheader>
+                                    <h1>List of Groceries</h1>
                                     {this.createGroceryList(row1, row.index, true)}
                                 </List>
-                                <List style={{width: "50%"}}>
+                                <List style={{width: "50%", paddingTop: "87px   "}}>
                                     {this.createGroceryList(row2, row.index, false)}
                                 </List>
                             </div>
