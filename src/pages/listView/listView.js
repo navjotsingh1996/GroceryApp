@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReactTable from "react-table";
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import ImageEdit from 'material-ui/svg-icons/image/edit';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import cookie from 'react-cookies'
@@ -29,10 +29,11 @@ class ListView extends Component {
         super(props);
         this.state = {
             data: [],
-            selected: {},
+            selected: -1,
             delDialog: false,
             formDialog: false,
             grocDialog: false,
+            editing: -1,
             formData: {
                 name: "",
                 nameErr: "",
@@ -111,7 +112,7 @@ class ListView extends Component {
     }
 
     openDelDialog (row) {
-        this.setState({selected: row.original, delDialog: true});
+        this.setState({selected: row.index, delDialog: true});
     };
 
     closeDelDialog = () => {
@@ -136,17 +137,12 @@ class ListView extends Component {
 
     checkForEmptyNames = () => {
         const formData = this.state.formData;
-        console.log(formData);
         var indexes = [];
         var diff = 0;
         this.state.formData.items.map((item, i) => {
-            console.log(item, i);
             if (item.name === "" || item.name === " ") {
                 indexes.push(i-diff);
                 diff++;
-            }
-            else {
-                console.log(item.name);
             }
         });
         indexes.map((index) => {
@@ -170,27 +166,28 @@ class ListView extends Component {
 
     saveGrocDialog = () => {
         this.checkForEmptyNames();
-        const newRow = {name: this.state.formData.name, date: this.state.formData.date, groceries: this.state.formData.items};
+        const newRow = {
+            name: this.state.formData.name,
+            date: this.state.formData.date,
+            groceries: this.state.formData.items
+        };
         const data = this.state.data;
-        data.push(newRow);
+        if (this.state.editing !== -1) {
+            data[this.state.editing] = newRow;
+        } else {
+
+            data.push(newRow);
+        }
         this.setState({grocDialog: false, data});
         this.saveDataToCookies();
         this.clearFormData();
     };
 
     deleteRow = () => {
-        const row = this.state.selected;
-        var index = 0;
-        this.state.data.map((r,i) => {
-            if (r.name === row.name) {
-                index = i;
-                return i;
-            }
-        });
         const newData = this.state.data;
-        newData.splice(index,1);
-        this.readjustDataToCookies(index);
-        this.setState({data: newData, delDialog: false});
+        newData.splice(this.state.selected,1);
+        this.readjustDataToCookies(this.state.selected);
+        this.setState({data: newData, delDialog: false, selected: -1});
     };
 
     filterGroceries = (val, arr) => {
@@ -263,11 +260,27 @@ class ListView extends Component {
         this.setState({formData});
     }
 
+    editGroceryList(row) {
+        const realRow = row.original;
+        console.log(row);
+        const groceries = realRow.groceries;
+        const formData = {
+            name: realRow.name,
+            nameErr: "",
+            date: realRow.date,
+            dateErr: "",
+            itemNums: groceries.length,
+            itemErr: "",
+            items: groceries
+        };
+        this.setState({formData, grocDialog: true, editing: row.index});
+    };
+
     render() {
         this.saveDataToCookies();
         const delActions = [
             <RaisedButton label="YES" primary keyboardFocused={true} onClick={this.deleteRow} />,
-            <RaisedButton label="NO" secondary onClick={this.closeDelDialog} />,
+            <RaisedButton label="CANCEL" secondary onClick={this.closeDelDialog} />,
         ];
         const createListActions = [
             <RaisedButton label="NEXT" primary onClick={this.openGrocDialog} disabled={
@@ -316,9 +329,9 @@ class ListView extends Component {
                         return (<div key={i}>
                                     <div style={{display: 'inline-flex'}}>
                                         {i+1 < 10 ? (<h2 style={{paddingTop: '15px', marginRight: '50px'}}>{i+1}</h2>) :  (<h2 style={{paddingTop: '15px', marginRight: '35px'}}>{i+1}</h2>)}<br />
-                                    <TextField style={{marginRight: "50px"}} floatingLabelText="Name" onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
-                                    <TextField style={{marginRight: "100px"}} floatingLabelText="Quantity" onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
-                                    <TextField style={{marginRight: "200px"}} floatingLabelText="Expiration Date" onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
+                                    <TextField style={{marginRight: "50px"}} floatingLabelText="Name" value={d.name} onChange={(evt, val) => this.groceryNameChange(val,i)} /><br />
+                                    <TextField style={{marginRight: "100px"}} floatingLabelText="Quantity" value={d.amount} onChange={(evt, val) => this.groceryQuantityChange(val,i)} /><br />
+                                    <TextField style={{marginRight: "200px"}} floatingLabelText="Expiration Date" value={d.date} onChange={(evt, val) => this.groceryDateChange(val,i)} /><br />
                                             <RaisedButton style={{height: 35, marginTop: 25}} labelColor="#ffffff" backgroundColor="red" label="DELETE" onClick={() => this.deleteGrocery(i)} />
                                     </div>
                                 </div>)
@@ -397,7 +410,10 @@ class ListView extends Component {
                                     <h1>List of Groceries</h1>
                                     {this.createGroceryList(row1, row.index, true)}
                                 </List>
-                                <List style={{width: "50%", paddingTop: "87px   "}}>
+                                <List style={{width: "50%", paddingTop: "87px"}}>
+                                    <FloatingActionButton style={{float: "right", marginTop: -70}}>
+                                        <ImageEdit onClick={() => this.editGroceryList(row)}/>
+                                    </FloatingActionButton>
                                     {this.createGroceryList(row2, row.index, false)}
                                 </List>
                             </div>
