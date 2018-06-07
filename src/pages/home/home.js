@@ -11,8 +11,8 @@ class Home extends Component {
         return (
             <div className="Home">
                 <h1>Grocery List</h1>
-                <RaisedButton primary label="Go To Lists" onClick={() => this.routeTable(false)} />
-                <RaisedButton primary label="Create a List" onClick={() => this.routeTable(true)} />
+                <RaisedButton style={{marginRight: 150}} primary label="Go To Lists" onClick={() => this.routeTable(false)} />
+                <RaisedButton style={{marginLeft: 150}} primary label="Create a List" onClick={() => this.routeTable(true)} />
             </div>
         );
     }

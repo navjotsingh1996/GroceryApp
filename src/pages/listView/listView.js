@@ -178,7 +178,7 @@ class ListView extends Component {
 
             data.push(newRow);
         }
-        this.setState({grocDialog: false, data});
+        this.setState({grocDialog: false, data, editing: -1});
         this.saveDataToCookies();
         this.clearFormData();
     };
