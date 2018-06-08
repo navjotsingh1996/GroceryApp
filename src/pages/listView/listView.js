@@ -289,13 +289,13 @@ class ListView extends Component {
             <RaisedButton label="CANCEL" secondary onClick={this.closeFormDialog} />,
         ];
         const grocActions = [
-            <RaisedButton label="SAVE" primary onClick={this.saveGrocDialog} />,
+            <RaisedButton label="SAVE LIST" primary onClick={this.saveGrocDialog} />,
             <RaisedButton label="CANCEL" secondary onClick={this.closeGrocDialog} />,
         ];
         return (
             <div className="ListView">
                 <h1>Grocery List</h1><br /><br /><br /><br />
-                <RaisedButton label="+ Add a list" style={{float: "right", marginRight: 100}} onClick={this.openFormDialog} />
+                <RaisedButton label="+ Add a list" primary style={{float: "right", marginRight: 100}} onClick={this.openFormDialog} />
                 <Dialog
                     title="Confirmation"
                     actions={delActions}
